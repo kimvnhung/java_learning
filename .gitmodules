@@ -1,0 +1,3 @@
+[submodule "HaSmartCOMSimulator/HaSmartLib"]
+	path = HaSmartCOMSimulator/HaSmartLib
+	url = https://gitlab.pitagon.vn/kenh-soy/ks-plc-driver
