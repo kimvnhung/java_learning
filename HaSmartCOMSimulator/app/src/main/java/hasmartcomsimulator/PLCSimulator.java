@@ -108,7 +108,7 @@ public class PLCSimulator implements Runnable, SerialPortDataListener {
                 port.writeBytes(response,response.length);
             }
         }catch (Exception e){
-            System.err.println(e.getMessage());
+            System.err.println(Utils.stackStraceString(e));
             port.writeBytes(new byte[]{0x15},1);
         }
     }
