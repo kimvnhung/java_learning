@@ -21,6 +21,7 @@ dependencies {
     implementation files('../HaSmartLib/lib/build/libs/hasmart-1.1.jar')
     implementation 'com.google.guava:guava:32.1.1-jre'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.1'
+    implementation 'com.fazecast:jSerialComm:2.6.1'
 }
 
 testing {
