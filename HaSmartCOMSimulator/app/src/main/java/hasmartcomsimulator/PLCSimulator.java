@@ -1,9 +1,9 @@
 package hasmartcomsimulator;
 
-import static hasmart.primaryInterface.PrimaryInterface.BAUD_RATE;
-import static hasmart.primaryInterface.PrimaryInterface.NUM_DATA_BITS;
-import static hasmart.primaryInterface.PrimaryInterface.NUM_STOP_BITS;
-import static hasmart.primaryInterface.PrimaryInterface.PARITY;
+import static hasmart.constants.Constants.BAUD_RATE;
+import static hasmart.constants.Constants.NUM_DATA_BITS;
+import static hasmart.constants.Constants.NUM_STOP_BITS;
+import static hasmart.constants.Constants.PARITY;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
@@ -41,12 +41,26 @@ public class PLCSimulator implements Runnable, SerialPortDataListener {
         for (int i = 0; i < 650; i++) {
             if (i==600){
                 if (index == PLCIndex.PLC1){
-                    registers.put(i,int2DoubleInSameBits(10));
+                    registers.put(i,int2DoubleInSameBits(1662640997));
                 }else {
-                    registers.put(i,int2DoubleInSameBits(-10));
+                    registers.put(i,int2DoubleInSameBits(-1852250592));
                 }
                 System.out.println(registers.get(i));
-            }else {
+            } else if (i == 602) {
+                if (index == PLCIndex.PLC1){
+                    registers.put(i,int2DoubleInSameBits(1625926211));
+                }else {
+                    registers.put(i,int2DoubleInSameBits(585081218));
+                }
+                System.out.println(registers.get(i));
+            } else if (i == 604) {
+                if (index == PLCIndex.PLC1){
+                    registers.put(i,int2DoubleInSameBits(1203708648));
+                }else {
+                    registers.put(i,int2DoubleInSameBits(-617059527));
+                }
+                System.out.println(registers.get(i));
+            } else {
                 registers.put(i,0.0);
             }
         }
@@ -96,7 +110,7 @@ public class PLCSimulator implements Runnable, SerialPortDataListener {
 
         byte[] newData = new byte[port.bytesAvailable()];
         port.readBytes(newData, newData.length);//read buffer
-        System.out.println("Receive new data");
+        System.out.println("Receive new data at "+index.name());
         try {
             SerialCommand cmd = new SerialCommand(index,newData);
             if (cmd.getType() == CommandType.WRITE){
