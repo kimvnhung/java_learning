@@ -12,7 +12,7 @@ import hasmart.primaryInterface.PLCIndex;
 public class App {
 
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         PLCSimulator plc1 = new PLCSimulator(PLCIndex.PLC1,"COM3");
         PLCSimulator plc2 = new PLCSimulator(PLCIndex.PLC2,"COM4");
         executorService.submit(plc1);

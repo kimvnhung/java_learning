@@ -13,6 +13,7 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import hasmart.constants.ResultCode;
 import hasmart.constants.SerialCommandContants;
@@ -67,7 +68,7 @@ public class PLCSimulator implements Runnable, SerialPortDataListener {
     }
 
     private double int2DoubleInSameBits(int value){
-        System.out.println(Long.toHexString(value&0xFFFFFFFFL));
+//        System.out.println(Long.toHexString(value&0xFFFFFFFFL));
         return Double.longBitsToDouble(value & 0xFFFFFFFFL);
     }
 
@@ -81,13 +82,41 @@ public class PLCSimulator implements Runnable, SerialPortDataListener {
             port.setNumStopBits(NUM_STOP_BITS);
             port.setParity(PARITY);
             port.addDataListener(this);
+            //generate alarmcode array
+            int[] alarmCode = new int[25];
+            for (int i = 0; i < alarmCode.length; i++) {
+                if (i >= 1 && i <= 18){
+                    if (i != 18){
+                        alarmCode[i] = 100+i;
+                    }else {
+                        alarmCode[i] = 201;
+                    }
+                }else {
+                    alarmCode[i] = i;
+                }
+            }
+
 
             while (running){
-
+                randomAlarmCode(alarmCode);
+                try {
+                    Random rd = new Random();
+                    int randomInt = rd.nextInt(8000)+2000;
+                    Thread.sleep(randomInt);
+                } catch (InterruptedException e) {
+                    System.err.println(e.getMessage());
+                }
             }
             port.closePort();
         }
         System.out.println("Finish PLCSimulator");
+    }
+
+    private void randomAlarmCode(int[] alarmCode) {
+        Random random = new Random();
+        int randomInt = random.nextInt(25)-1;
+        System.out.printf("write alarmcde %d\n",alarmCode[randomInt]);
+        registers.put(100,int2DoubleInSameBits(alarmCode[randomInt]));
     }
 
     public boolean isRunning() {
